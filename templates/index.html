@@ -1,0 +1,142 @@
+<!-- <!DOCTYPE html>
+<html>
+  <body style="text-align: center">
+    <h2>AI PPT Generator</h2>
+
+    <form method="POST">
+      <input name="topic" placeholder="Topic" required /><br /><br />
+
+      <input
+        name="slides"
+        type="number"
+        placeholder="no of slides"
+      /><br /><br />
+
+      <select name="format">
+        <option value="ppt">PPT</option>
+        <option value="pdf">PDF</option></select
+      ><br /><br />
+
+      <button>Generate</button>
+    </form>
+
+    {% if text %}
+
+    <h3>Preview</h3>
+
+    <textarea style="width: 80%; height: 300px">{{text}}</textarea>
+
+    <br /><br />
+
+    <a href="/download?format={{format}}">
+      <button>Download</button>
+    </a>
+
+    {% endif %}
+  </body>
+</html> -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>SmartEdu AI</title>
+
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        text-align: center;
+      }
+
+      .container {
+        width: 500px;
+        margin: 100px auto;
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        color: black;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        animation: fade 1s;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+      }
+
+      button {
+        background: #667eea;
+        color: white;
+        border: none;
+        padding: 12px;
+        width: 100%;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      button:hover {
+        background: #5a67d8;
+        transform: scale(1.03);
+      }
+
+      .download {
+        background: green;
+        margin-top: 10px;
+      }
+
+      textarea {
+        width: 100%;
+        height: 200px;
+        border-radius: 8px;
+        padding: 10px;
+      }
+
+      @keyframes fade {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h2>🎓 SmartEdu AI PPT Generator</h2>
+
+      <form method="POST">
+        <input name="topic" placeholder="Enter Topic" required />
+
+        <input name="slides" type="number" value="6" />
+
+        <select name="format">
+          <option value="ppt">PowerPoint</option>
+          <option value="pdf">PDF</option>
+        </select>
+
+        <button>Generate</button>
+      </form>
+
+      {% if text %}
+
+      <h3>Preview</h3>
+      <textarea readonly>{{text}}</textarea>
+
+      <a href="/download?theme={{theme}}&format={{format}}">
+        <button class="download">⬇ Download</button>
+      </a>
+
+      {% endif %}
+    </div>
+  </body>
+</html>
