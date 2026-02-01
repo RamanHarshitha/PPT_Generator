@@ -17,33 +17,68 @@ generated_text = ""
 
 # ---------------- PPT ----------------
 
-def create_ppt(content):
+# def create_ppt(content):
 
+#     prs = Presentation()
+
+#     # Strong splitter
+#     slides = content.split("###SLIDE###")
+
+#     for slide in slides:
+#         slide = slide.strip()
+
+#         if len(slide) < 10:
+#             continue
+
+#         lines = slide.split("\n")
+
+#         title = lines[0]
+
+#         s = prs.slides.add_slide(prs.slide_layouts[1])
+#         s.shapes.title.text = title
+
+#         tf = s.placeholders[1].text_frame
+#         tf.clear()
+
+#         for line in lines[1:]:
+#             line = line.strip()
+#             if line.startswith("-"):
+#                 tf.add_paragraph().text = line.replace("-","").strip()
+
+#     prs.save("output.pptx")
+#     return "output.pptx"
+
+def create_ppt(content):
     prs = Presentation()
 
-    # Strong splitter
+    # Split slides by marker
     slides = content.split("###SLIDE###")
 
     for slide in slides:
         slide = slide.strip()
-
-        if len(slide) < 10:
+        if len(slide) < 5:  # skip very short slides
             continue
 
         lines = slide.split("\n")
+        if not lines:
+            continue
 
-        title = lines[0]
-
+        title = lines[0].strip()
         s = prs.slides.add_slide(prs.slide_layouts[1])
         s.shapes.title.text = title
 
         tf = s.placeholders[1].text_frame
         tf.clear()
 
+        # Add each line as paragraph, handle dashes/bullets
         for line in lines[1:]:
             line = line.strip()
-            if line.startswith("-"):
-                tf.add_paragraph().text = line.replace("-","").strip()
+            if not line:
+                continue
+            # Remove common bullet characters if present
+            if line[0] in ["-", "•"]:
+                line = line[1:].strip()
+            tf.add_paragraph().text = line
 
     prs.save("output.pptx")
     return "output.pptx"
@@ -52,8 +87,35 @@ def create_ppt(content):
 
 # ---------------- PDF ----------------
 
-def create_pdf(content):
+# def create_pdf(content):
 
+#     pdf = FPDF()
+#     pdf.add_page()
+#     pdf.set_font("Arial", size=12)
+
+#     slides = re.split(r"###SLIDE###", content)
+
+#     for slide in slides:
+#         slide = slide.strip()
+#         if not slide:
+#             continue
+
+#         lines = slide.split("\n")
+
+#         pdf.set_font("Arial","B",14)
+#         pdf.multi_cell(0,10,lines[0])
+
+#         pdf.set_font("Arial", size=12)
+
+#         for b in lines[1:]:
+#             if b.strip():
+#                 pdf.multi_cell(0,8,b.replace("-",""))
+
+#         pdf.add_page()
+
+#     pdf.output("output.pdf")
+#     return "output.pdf"
+def create_pdf(content):
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Arial", size=12)
@@ -66,20 +128,25 @@ def create_pdf(content):
             continue
 
         lines = slide.split("\n")
-
         pdf.set_font("Arial","B",14)
-        pdf.multi_cell(0,10,lines[0])
+        pdf.multi_cell(0,10,lines[0].strip())  # Title
 
         pdf.set_font("Arial", size=12)
-
-        for b in lines[1:]:
-            if b.strip():
-                pdf.multi_cell(0,8,b.replace("-",""))
+        for line in lines[1:]:
+            line = line.strip()
+            if not line:
+                continue
+            # Remove bullet characters
+            if line[0] in ["-", "•"]:
+                line = line[1:].strip()
+            pdf.multi_cell(0,8,line)
 
         pdf.add_page()
 
     pdf.output("output.pdf")
     return "output.pdf"
+
+
 
 # ---------------- ROUTES ----------------
 
