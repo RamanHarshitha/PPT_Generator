@@ -5,13 +5,13 @@ import re
 from groq import Groq
 from pptx.util import Pt
 import os
-from dotenv import load_dotenv
+'''from dotenv import load_dotenv
 
-load_dotenv()
-api_key=os.getenv("GROQ_API_KEY")
+load_dotenv()'''
 app = Flask(__name__)
 
-client = Groq(api_key)
+client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+
 
 generated_text = ""
 
@@ -148,5 +148,6 @@ def download():
 
     return send_file(file, as_attachment=True)
 
-if __name__=="__main__":
-    app.run(debug=True,port=8081)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
+
